@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customer Visits vs Sales Predictor</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #eef2f3, #dfe9f3);
+            text-align: center;
+            padding: 40px;
+            animation: fadeIn 1s ease-in;
+        }
+
+        h1 {
+            color: #333;
+            animation: slideDown 1s ease;
+        }
+
+        form {
+            background: white;
+            display: inline-block;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            margin-top: 20px;
+            animation: fadeIn 1.5s ease;
+        }
+
+        input {
+            padding: 10px;
+            width: 220px;
+            margin-top: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 10px 25px;
+            background: #4CAF50;
+            border: none;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: transform 0.3s, background 0.3s;
+        }
+
+        button:hover {
+            background: #43a047;
+            transform: scale(1.05);
+        }
+
+        h2 {
+            color: #2e7d32;
+            margin-top: 20px;
+            animation: fadeInUp 1s ease;
+        }
+
+        h3 {
+            margin-top: 30px;
+            color: #444;
+        }
+
+        /* 🔥 GRAPH STYLING & ANIMATION */
+        .graph-box {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 15px;
+            background: white;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            animation: floatGraph 3s ease-in-out infinite;
+        }
+
+        .graph-box img {
+            max-width: 90%;
+            border-radius: 10px;
+            animation: colorPulse 6s linear infinite, zoomIn 1s ease;
+        }
+
+        /* 🔥 Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes zoomIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* 🌈 Color animation */
+        @keyframes colorPulse {
+            0%   { filter: hue-rotate(0deg); }
+            50%  { filter: hue-rotate(180deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+
+        /* 🕊 Floating effect */
+        @keyframes floatGraph {
+            0%   { transform: translateY(0); }
+            50%  { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
+
+    </style>
+
+</head>
+<body>
+
+    <h1>📊 Predict Sales from Customer Visits</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        <label><b>Number of Customer Visits</b></label><br>
+        <input type="number" name="visits" step="1" required>
+        <br>
+        <button type="submit">Predict</button>
+    </form>
+
+    {% if prediction %}
+        <h2>💰 Predicted Sales: ₹ {{ prediction|floatformat:2 }}</h2>
+    {% endif %}
+
+    <h3>Customer Visits vs Sales</h3>
+
+    <div class="graph-box">
+        <img src="data:image/png;base64,{{ plot_data }}" alt="Plot">
+    </div>
+
+</body>
+</html>
